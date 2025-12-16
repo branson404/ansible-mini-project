@@ -1,0 +1,125 @@
+---
+# tasks file for ppserver
+
+- name: Update package cache (Ubuntu)
+  apt:
+    update_cache: yes
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Update yum cache (CentOS)
+  yum:
+    update_cache: yes
+  become: yes
+  when: ansible_os_family == "RedHat"
+
+- name: Install Node.js (Ubuntu)
+  apt:
+    name: nodejs
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install Node.js (CentOS)
+  yum:
+    name: nodejs
+    state: present
+  become: yes
+  when: ansible_os_family == "RedHat"
+
+- name: Import the MongoDB public GPG key (Ubuntu)
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor
+    creates: /usr/share/keyrings/mongodb-server-8.0.gpg
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Add MongoDB repository to APT sources (Ubuntu)
+  ansible.builtin.apt_repository:
+    repo: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse'
+    state: present
+    filename: 'mongodb-org-8.0'
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install MongoDB (Ubuntu)
+  apt:
+    name: mongodb-org
+    state: latest
+    update_cache: yes
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Create MongoDB repo file (CentOS)
+  copy:
+    dest: /etc/yum.repos.d/mongodb-org-8.0.repo
+    content: |
+      [mongodb-org-8.0]
+      name=MongoDB Repository
+      baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/8.0/x86_64/
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://www.mongodb.org/static/pgp/server-8.0.asc
+  become: yes
+  when: ansible_os_family == "RedHat"
+
+- name: Install MongoDB (CentOS)
+  yum:
+    name: mongodb-org
+    state: latest
+  become: yes
+  when: ansible_os_family == "RedHat"
+  
+- name: Start MongoDB service
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Install git
+  package:
+    name: git
+    state: present
+  become: yes
+
+- name: Clone the MERN stack todo repository
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ app_dir }}"
+    version: main
+    force: yes
+  become: yes
+
+- name: Install Node.js dependencies for backend
+  npm:
+    path: "{{ app_dir }}/todo-backend"
+    state: present
+  become: yes
+
+- name: Install frontend dependencies
+  npm:
+    path: "{{ app_dir }}/todo-frontend"
+    state: present
+  become: yes
+
+- name: Create systemd service for the app
+  template:
+    src: templates/mern-todo.service.j2
+    dest: /etc/systemd/system/mern-todo.service
+  become: yes
+  notify: restart app
+
+- name: Build frontend
+  command: npm run build
+  args:
+    chdir: "{{ app_dir }}/todo-frontend"
+  become: yes
+
+- name: Start and enable the app service
+  systemd:
+    name: mern-todo
+    state: started
+    enabled: yes
+  become: yes
+

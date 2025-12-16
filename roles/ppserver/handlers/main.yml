@@ -1,0 +1,14 @@
+---
+# handlers file for ppserver
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: restart app
+  systemd:
+    name: mern-todo
+    state: restarted
+    enabled: yes
+

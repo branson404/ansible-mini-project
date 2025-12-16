@@ -1,0 +1,14 @@
+- hosts: admin
+  become: true
+  roles:
+    - roles/common
+
+- hosts: web
+  become: true
+  roles:
+    - roles/webserver
+
+- hosts: app
+  become: true
+  roles:
+    - roles/appserver

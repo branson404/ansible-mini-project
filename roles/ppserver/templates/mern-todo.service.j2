@@ -1,0 +1,16 @@
+[Unit]
+Description=MERN Stack Todo App
+After=network.target mongod.service
+
+[Service]
+Type=simple
+User={{ node_user }}
+WorkingDirectory={{ app_dir }}/todo-backend
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+Environment=MONGO_URI=mongodb://{{ db_host }}:{{ db_port }}/{{ db_name }}
+
+[Install]
+WantedBy=multi-user.target

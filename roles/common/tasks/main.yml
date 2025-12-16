@@ -1,0 +1,59 @@
+---
+# tasks file for common
+- name: Create application user
+  user:
+    name: deploy
+    shell: /bin/bash
+    create_home: yes
+
+- name: Allow deploy user passwordless sudo
+  copy:
+    dest: /etc/sudoers.d/deploy
+    content: "deploy ALL=(ALL) NOPASSWD:ALL"
+    mode: '0440'
+
+- name: Create .ssh directory for deploy user
+  file:
+    path: /home/deploy/.ssh
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: '0700'
+
+- name: Add SSH public key for deploy user
+  authorized_key:
+    user: deploy
+    key: "{{ ssh_public_key }}"
+    state: present
+
+- name: Update apt cache (Debian/Ubuntu)
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Update yum cache (RedHat/CentOS)
+  command: yum makecache
+  when: ansible_os_family == "RedHat"
+
+- name: Install common packages
+  package:
+    name:
+      - git
+      - curl
+      - unzip
+    state: present
+
+- name: Install Node.js (Ubuntu)
+  apt:
+    name: nodejs
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Node.js (CentOS)
+  yum:
+    name: nodejs
+    state: present
+  when: ansible_os_family == "RedHat"
+
+
+

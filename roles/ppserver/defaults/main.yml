@@ -1,0 +1,9 @@
+---
+# defaults file for ppserver
+repo_url: https://github.com/jvlcode/mern-stack-todo
+app_dir: /opt/mern-stack-todo
+db_host: localhost
+db_port: 27017
+db_name: mern-app
+app_port: 8000
+node_user: www-data
