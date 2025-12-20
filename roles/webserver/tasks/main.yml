@@ -69,7 +69,7 @@
 
 - name: Clone the repository
   git:
-    repo: https://github.com/jvlcode/mern-stack-todo
+    repo: "{{ repo_url }}"
     dest: /tmp/mern-stack-todo
     version: main
   become: yes
@@ -77,8 +77,8 @@
 - name: Replace backend api
   replace:
     path: /tmp/mern-stack-todo/todo-frontend/src/Todo.js
-    regexp: 'const apiUrl = "http://13.60.186.181:8000"'
-    replace: 'const apiUrl = ""'
+    regexp: 'const apiUrl = ""'
+    replace: 'const apiUrl = "http://{{ app_host }}:{{ app_port }}"'
   become: yes
 
 - name: Install frontend dependencies

@@ -1,2 +1,5 @@
 ---
 # defaults file for webserver
+app_host: 13.60.186.181
+app_port: 8000
+nginx_root: /var/www/mern-todo/todo-frontend/build
