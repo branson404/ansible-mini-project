@@ -11,18 +11,16 @@ This repository demonstrates how to use Ansible to deploy a basic Todo applicati
 - [Prerequisites](#prerequisites)
 - [Repository Structure](#repository‑structure)
 - [Getting Started](#getting‑started)
-‑ [Usage](#usage)
-‑ [Roles Explained](#roles‑explained)
-‑ [Inventory](#inventory)
-‑ [Playbook](#playbook)
+- [Usage](#usage)
+- [Roles Explained](#roles‑explained)
+- [Inventory](#inventory)
+- [Playbook](#playbook)
 
 ---
 
-## 📘 About
+## About
 
 This repository contains a small Ansible project which deploys a Todo application using an Ansible playbook. It uses a role to encapsulate the application deployment logic and inventories to define target hosts.  
-
-_(Add more context about the app and your goals here.)_
 
 ---
 
@@ -54,7 +52,7 @@ Before you begin, make sure you have:
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 1. **Clone the project**
    ```bash
@@ -74,7 +72,7 @@ Modify inventory.ini to match your hosts and groups.
 
 Use the playbook to deploy your Todo app:
 ```bash
-ansible‑playbook ‑i inventory.ini playbook.yaml ‑‑ask‑vault‑pass
+ansible‑playbook ‑i inventory.ini playbook.yaml ‑‑ask‑vault‑pass vault.pass
 ```
 use `‑‑ask‑vault‑pass` , because i've secured the values inside
 
