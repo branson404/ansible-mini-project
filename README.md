@@ -68,8 +68,8 @@ Before you begin, make sure you have:
 Modify inventory.ini to match your hosts and groups.
 
 3. **Run the Playbook**
-```bash
-  ansible‑playbook ‑i inventory.ini playbook.yaml
+   ```bash
+     ansible‑playbook ‑i inventory.ini playbook.yaml
    ```
 ---
 ##Usage
@@ -78,7 +78,7 @@ Use the playbook to deploy your Todo app:
 ```bash
 ansible‑playbook ‑i inventory.ini playbook.yaml ‑‑ask‑vault‑pass
 ```
-use `‑‑ask‑vault‑pass` , because i've secured the vaulues inside
+use `‑‑ask‑vault‑pass` , because i've secured the values inside
 
 ##Roles Explained
 todo‑app
