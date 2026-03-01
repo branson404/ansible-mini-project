@@ -15,8 +15,6 @@ This repository demonstrates how to use Ansible to deploy a basic Todo applicati
 ‑ [Roles Explained](#roles‑explained)
 ‑ [Inventory](#inventory)
 ‑ [Playbook](#playbook)
-‑ [Contributing](#contributing)
-‑ [License](#license)
 
 ---
 
@@ -41,7 +39,7 @@ Before you begin, make sure you have:
 
 ## 📁 Repository Structure
 
-
+```
 .
 ├── group_vars/ # Variables for host groups
 ├── host_vars/ # Variables for individual hosts
@@ -52,7 +50,7 @@ Before you begin, make sure you have:
 │ └── tasks/
 │ └── main.yml
 └── vault.pass # (Optional) Encrypted secrets file
-
+```
 
 ---
 
@@ -72,7 +70,7 @@ Modify inventory.ini to match your hosts and groups.
      ansible‑playbook ‑i inventory.ini playbook.yaml
    ```
 ---
-##Usage
+## Usage
 
 Use the playbook to deploy your Todo app:
 ```bash
@@ -80,7 +78,7 @@ ansible‑playbook ‑i inventory.ini playbook.yaml ‑‑ask‑vault‑pass
 ```
 use `‑‑ask‑vault‑pass` , because i've secured the values inside
 
-##Roles Explained
+## Roles Explained
 todo‑app
 
 - The todo‑app role contains all tasks required to deploy and configure the Todo application:
@@ -88,7 +86,7 @@ todo‑app
 - Copy application file
 - Start application process or service
 
-##Inventory
+## Inventory
 
 Your inventory.ini defines host groups, e.g.:
 `
